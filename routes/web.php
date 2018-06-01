@@ -17,8 +17,6 @@ declare(strict_types=1);
 
 namespace Fisharebest\Webtrees;
 
-use Fisharebest\Webtrees\Http\Controllers\GedcomFileController;
-
 $routes = [];
 
 // Admin routes.
@@ -26,8 +24,6 @@ if (Auth::isAdmin()) {
 	$routes += [
 		'GET:admin-blocks'                    => 'AdminController@blocks',
 		'GET:admin-charts'                    => 'AdminController@charts',
-		'GET:admin-clean-data'                => 'AdminController@cleanData',
-		'POST:admin-clean-data'               => 'AdminController@cleanDataAction',
 		'GET:admin-control-panel'             => 'AdminController@controlPanel',
 		'POST:admin-delete-module-settings'   => 'AdminController@deleteModuleSettings',
 		'GET:admin-fix-level-0-media'         => 'AdminController@fixLevel0Media',
@@ -36,7 +32,6 @@ if (Auth::isAdmin()) {
 		'GET:admin-menus'                     => 'AdminController@menus',
 		'GET:admin-modules'                   => 'AdminController@modules',
 		'GET:admin-reports'                   => 'AdminController@reports',
-		'GET:admin-server-information'        => 'AdminController@serverInformation',
 		'GET:admin-sidebars'                  => 'AdminController@sidebars',
 		'GET:admin-tabs'                      => 'AdminController@tabs',
 		'POST:admin-update-module-access'     => 'AdminController@updateModuleAccess',
@@ -44,6 +39,28 @@ if (Auth::isAdmin()) {
 		'GET:admin-webtrees1-thumbs'          => 'AdminController@webtrees1Thumbnails',
 		'POST:admin-webtrees1-thumbs-action'  => 'AdminController@webtrees1ThumbnailsAction',
 		'GET:admin-webtrees1-thumbs-data'     => 'AdminController@webtrees1ThumbnailsData',
+		'GET:admin-media'                     => 'AdminMediaController@index',
+		'GET:admin-media-data'                => 'AdminMediaController@data',
+		'POST:admin-media-delete'             => 'AdminMediaController@delete',
+		'GET:admin-media-upload'              => 'AdminMediaController@upload',
+		'POST:admin-media-upload'             => 'AdminMediaController@uploadAction',
+		'GET:admin-clean-data'                => 'AdminSiteController@cleanData',
+		'POST:admin-clean-data'               => 'AdminSiteController@cleanDataAction',
+		'GET:admin-site-preferences'          => 'AdminSiteController@preferencesForm',
+		'POST:admin-site-preferences'         => 'AdminSiteController@preferencesSave',
+		'GET:admin-site-mail'                 => 'AdminSiteController@mailForm',
+		'POST:admin-site-mail'                => 'AdminSiteController@mailSave',
+		'GET:admin-site-registration'         => 'AdminSiteController@registrationForm',
+		'POST:admin-site-registration'        => 'AdminSiteController@registrationSave',
+		'GET:admin-site-languages'            => 'AdminSiteController@languagesForm',
+		'POST:admin-site-languages'           => 'AdminSiteController@languagesSave',
+		'GET:admin-site-analytics'            => 'AdminSiteController@analyticsForm',
+		'POST:admin-site-analytics'           => 'AdminSiteController@analyticsSave',
+		'GET:admin-site-logs'                 => 'AdminSiteController@logs',
+		'GET:admin-site-logs-data'            => 'AdminSiteController@logsData',
+		'POST:admin-site-logs-delete'         => 'AdminSiteController@logsDelete',
+		'GET:admin-site-logs-export'          => 'AdminSiteController@logsExport',
+		'GET:admin-site-information'          => 'AdminSiteController@serverInformation',
 		'GET:admin-trees-import'              => 'AdminTreesController@importForm',
 		'POST:admin-trees-import'             => 'AdminTreesController@importAction',
 		'POST:admin-trees-create'             => 'AdminTreesController@create',
@@ -51,6 +68,28 @@ if (Auth::isAdmin()) {
 		'POST:admin-trees-delete'             => 'AdminTreesController@delete',
 		'POST:admin-trees-sync'               => 'AdminTreesController@synchronize',
 		'GET:admin-trees'                     => 'AdminTreesController@index',
+		'GET:admin-trees-check'               => 'AdminTreesController@check',
+		'GET:admin-trees-duplicates'          => 'AdminTreesController@duplicates',
+		'GET:admin-trees-export'              => 'AdminTreesController@export',
+		'GET:admin-trees-download'            => 'AdminTreesController@exportClient',
+		'POST:admin-trees-export'             => 'AdminTreesController@exportServer',
+		'GET:admin-trees-places'              => 'AdminTreesController@places',
+		'POST:admin-trees-places'             => 'AdminTreesController@placesAction',
+		'GET:admin-trees-preferences'         => 'AdminTreesController@preferences',
+		'POST:admin-trees-preferences'        => 'AdminTreesController@preferencesUpdate',
+		'GET:admin-trees-renumber'            => 'AdminTreesController@renumber',
+		'POST:admin-trees-renumber'           => 'AdminTreesController@renumberAction',
+		'GET:admin-trees-merge'               => 'AdminTreesController@merge',
+		'POST:admin-trees-merge'              => 'AdminTreesController@mergeAction',
+		'GET:admin-trees-unconnected'         => 'AdminTreesController@unconnected',
+		'GET:admin-users'                     => 'AdminUsersController@index',
+		'GET:admin-users-data'                => 'AdminUsersController@data',
+		'GET:admin-users-create'              => 'AdminUsersController@create',
+		'POST:admin-users-create'             => 'AdminUsersController@save',
+		'GET:admin-users-edit'                => 'AdminUsersController@edit',
+		'POST:admin-users-edit'               => 'AdminUsersController@update',
+		'GET:admin-users-cleanup'             => 'AdminUsersController@cleanup',
+		'POST:admin-users-cleanup'            => 'AdminUsersController@cleanupAction',
 		'GET:tree-page-default-edit'          => 'HomePageController@treePageDefaultEdit',
 		'POST:tree-page-default-update'       => 'HomePageController@treePageDefaultUpdate',
 		'GET:user-page-default-edit'          => 'HomePageController@userPageDefaultEdit',
@@ -229,8 +268,6 @@ if ($tree instanceof Tree && $tree->getPreference('imported') === '1') {
 		'GET:search-advanced'        => 'SearchController@advanced',
 		'GET:search-general'         => 'SearchController@general',
 		'GET:search-phonetic'        => 'SearchController@phonetic',
-		'GET:module'                 => 'ModuleController@action',
-		'POST:module'                => 'ModuleController@action',
 	];
 }
 
@@ -249,6 +286,9 @@ $routes += [
 	'POST:language'        => 'UserController@language',
 	'POST:masquerade'      => 'UserController@masquerade',
 	'POST:theme'           => 'UserController@theme',
+	'GET:privacy-policy'   => 'StaticPageController@privacyPolicy',
+	'GET:module'           => 'ModuleController@action',
+	'POST:module'          => 'ModuleController@action',
 ];
 
 return $routes;

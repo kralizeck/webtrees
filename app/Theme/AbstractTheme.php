@@ -685,7 +685,7 @@ abstract class AbstractTheme {
 			$this->formatTreeTitle() .
 			$this->formQuickSearch() .
 			$this->secondaryMenuContainer($this->secondaryMenu()) .
-			$this->primaryMenuContainer($this->primaryMenu());
+			$this->primaryMenuContainer($this->primaryMenu($this->tree->significantIndividual(Auth::user())));
 	}
 
 	/**
@@ -1160,6 +1160,7 @@ abstract class AbstractTheme {
 	 * @return Menu|null
 	 */
 	public function menuChart(Individual $individual) {
+
 		$submenus = [];
 		foreach (Module::getActiveCharts($this->tree) as $chart) {
 			$menu = $chart->getChartMenu($individual);
@@ -1665,7 +1666,7 @@ abstract class AbstractTheme {
 	public function menuModules() {
 		$menus = [];
 		foreach (Module::getActiveMenus($this->tree) as $module) {
-			$menus[] = $module->getMenu();
+			$menus[] = $module->getMenu($this->tree);
 		}
 
 		return array_filter($menus);
@@ -2040,26 +2041,21 @@ abstract class AbstractTheme {
 	/**
 	 * Generate a list of items for the main menu.
 	 *
+	 * @param Individual $individual
+	 *
 	 * @return Menu[]
 	 */
-	public function primaryMenu() {
-		global $controller;
+	public function primaryMenu(Individual $individual) {
+		$surname = $individual->getAllNames()[0]['surn'];
 
-		if ($this->tree) {
-			$individual = $controller->getSignificantIndividual();
-
-			return array_filter(array_merge([
-				$this->menuHomePage(),
-				$this->menuChart($individual),
-				$this->menuLists($controller->getSignificantSurname()),
-				$this->menuCalendar(),
-				$this->menuReports(),
-				$this->menuSearch(),
-			], $this->menuModules()));
-		} else {
-			// No public trees? No genealogy menu!
-			return [];
-		}
+		return array_filter(array_merge([
+			$this->menuHomePage(),
+			$this->menuChart($individual),
+			$this->menuLists($surname),
+			$this->menuCalendar(),
+			$this->menuReports(),
+			$this->menuSearch(),
+		], $this->menuModules()));
 	}
 
 	/**

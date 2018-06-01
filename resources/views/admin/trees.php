@@ -53,7 +53,7 @@
 									<!-- PREFERENCES -->
 									<li>
 										<span class="fa-li"><i class="fas fa-cogs"></i></span>
-										<a href="<?= e(Html::url('admin_trees_config.php', ['ged' => $managed_tree->getName(), 'action' => 'general'])) ?>">
+										<a href="<?= e(route('admin-trees-preferences', ['ged' => $managed_tree->getName()])) ?>">
 											<?= I18N::translate('Preferences') ?>
 											<span class="sr-only">
 										<?= e($managed_tree->getTitle()) ?>
@@ -128,7 +128,7 @@
 									<!-- FIND DUPLICATES -->
 									<li>
 										<span class="fa-li"><i class="far fa-copy"></i></span>
-										<a href="<?= e(Html::url('admin_trees_duplicates.php', ['ged' => $managed_tree->getName()])) ?>">
+										<a href="<?= e(route('admin-trees-duplicates', ['ged' => $managed_tree->getName()])) ?>">
 											<?= I18N::translate('Find duplicates') ?>
 											<span class="sr-only">
 										<?= e($managed_tree->getTitle()) ?>
@@ -148,7 +148,7 @@
 									<!-- UPDATE PLACE NAMES -->
 									<li>
 										<span class="fa-li"><i class="fas fa-map-marker-alt"></i></span>
-										<a href="<?= e(Html::url('admin_trees_places.php', ['ged' => $managed_tree->getName()])) ?>">
+										<a href="<?= e(route('admin-trees-places', ['ged' => $managed_tree->getName()])) ?>">
 											<?= I18N::translate('Update place names') ?>
 											<span class="sr-only">
 										<?= e($managed_tree->getTitle()) ?>
@@ -158,7 +158,7 @@
 									<!-- CHECK FOR ERRORS -->
 									<li>
 										<span class="fa-li"><i class="fas fa-check"></i></span>
-										<a href="<?= e(Html::url('admin_trees_check.php', ['ged' => $managed_tree->getName()])) ?>">
+										<a href="<?= e(route('admin-trees-check', ['ged' => $managed_tree->getName()])) ?>">
 											<?= I18N::translate('Check for errors') ?>
 											<span class="sr-only">
 										<?= e($managed_tree->getTitle()) ?>
@@ -168,7 +168,7 @@
 									<!-- UNCONNECTED INDIVIDUALS -->
 									<li>
 										<span class="fa-li"><i class="fas fa-unlink"></i></span>
-										<a href="<?= e(Html::url('admin_trees_unconnected.php', ['ged' => $managed_tree->getName()])) ?>">
+										<a href="<?= e(route('admin-trees-unconnected', ['ged' => $managed_tree->getName()])) ?>">
 											<?= I18N::translate('Find unrelated individuals') ?>
 											<span class="sr-only">
 										<?= e($managed_tree->getTitle()) ?>
@@ -178,7 +178,7 @@
 									<!-- RENUMBER -->
 									<li>
 										<span class="fa-li"><i class="fas fa-sort-numeric-down"></i></span>
-										<a href="<?= e(Html::url('admin_trees_renumber.php', ['ged' => $managed_tree->getName()])) ?>">
+										<a href="<?= e(route('admin-trees-renumber', ['ged' => $managed_tree->getName()])) ?>">
 											<?= I18N::translate('Renumber') ?>
 											<span class="sr-only">
 										<?= e($managed_tree->getTitle()) ?>
@@ -274,7 +274,7 @@
 									<!-- DOWNLOAD/Export -->
 									<li>
 										<span class="fa-li"><i class="fas fa-download"></i></span>
-										<a href="<?= e(Html::url('admin_trees_download.php', ['ged' => $managed_tree->getName()])) ?>">
+										<a href="<?= e(route('admin-trees-export', ['ged' => $managed_tree->getName()])) ?>">
 											<?= I18N::translate('Export') ?>
 											<span class="sr-only">
 										<?= e($managed_tree->getTitle()) ?>
